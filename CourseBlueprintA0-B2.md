@@ -11,7 +11,28 @@ This course is designed for **fast, practical language acquisition** using:
 
 No grammar study is required. Learners absorb structure naturally through exposure.
 
----
+
+## Audio & Playback System
+
+Learners must be able to:
+- Slow audio (0.75x)
+- Play at normal speed (1.0x)
+- Slightly increase speed (1.25x)
+- Repeat sentences easily
+
+This supports:
+- pronunciation development
+- listening comprehension
+- transition to real speech speed
+
+
+## Shadowing (introduced gradually)
+
+At A1 and beyond:
+- learners can repeat sentences aloud
+- optional use of slowed audio
+- no formal instruction required
+
 
 # Course Structure
 
