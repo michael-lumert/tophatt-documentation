@@ -15,6 +15,7 @@ No grammar study is required. Learners absorb structure naturally through exposu
 ## Audio & Playback System
 
 Learners must be able to:
+- Very slow audio (0.50x)
 - Slow audio (0.75x)
 - Play at normal speed (1.0x)
 - Slightly increase speed (1.25x)
