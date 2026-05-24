@@ -1,0 +1,135 @@
+I want to improve the player control emphasis system. The current enum has only three states:
+
+suggested
+neutral
+discouraged
+
+Problem:
+“suggested” currently means two different things:
+1. This button is useful in the current mode.
+2. This is the next button the learner should press.
+
+Those are not the same. For example, in Echo mode, both Audio and Show are useful, but Audio should be the immediate next action before Show.
+
+Please refactor the emphasis model to support four levels:
+
+enum ControlEmphasis {
+  /// The immediate next recommended action right now.
+  primary,
+
+  /// Useful in this mode, but not the immediate next step.
+  suggested,
+
+  /// Normal styling. Allowed, no special emphasis.
+  neutral,
+
+  /// Visually muted but still tappable; communicates that the action
+  /// shortcuts the intended practice task.
+  discouraged,
+}
+
+Important rule:
+Only one control should normally be primary at a time.
+
+Visual meaning:
+- primary: strongest highlight / main next action
+- suggested: subtle highlight; useful but not urgent
+- neutral: normal styling
+- discouraged: muted/greyed out but still tappable
+
+Do not disable discouraged controls. The app should guide the learner, not block them.
+
+Mode behavior examples:
+
+Browse:
+Initial:
+- Next/Show = primary
+- Audio = suggested
+- Show = neutral or suggested
+- Next = neutral
+- Back/First = neutral
+
+Echo:
+Initial:
+- Audio = primary
+- Show = suggested or neutral
+- Next = neutral
+- Next/Show = discouraged
+
+After Audio has been pressed:
+- Show = primary
+- Audio = suggested
+- Next = neutral
+- Next/Show = discouraged
+
+After Show has been pressed:
+- Next = primary
+- Audio = suggested
+- Show = neutral
+- Next/Show = neutral or discouraged
+
+Recall:
+Initial:
+- Show = primary
+- Audio = neutral or suggested only after reveal, depending on existing behavior
+- Next = neutral
+- Next/Show = discouraged
+
+After Show has been pressed:
+- Audio = suggested
+- Next = primary
+- Next/Show = neutral or discouraged
+
+Listen:
+Initial:
+- Audio = primary
+- Show = suggested
+- Next/Show = discouraged
+
+After Audio has been pressed:
+- Show = primary
+- Audio = suggested
+
+After Show:
+- Next = primary
+- Audio = suggested
+
+Produce:
+Initial:
+- Show = primary
+- Next/Show = discouraged
+- Audio = neutral unless target audio is useful before reveal
+
+After Show:
+- Audio = suggested
+- Next = primary
+
+Shadow:
+Initial:
+- Audio = primary
+- speed controls may be visually important if they are part of this component
+- Next = suggested or neutral
+- Show = neutral/suggested depending on whether native meaning is hidden
+- Next/Show = discouraged unless this is first exposure
+
+Hands-free modes:
+Controls should be treated more like media playback:
+- Play/Pause = primary
+- Replay/Skip/Speed = suggested or neutral
+- Normal card reveal controls may be hidden, neutral, or discouraged depending on current implementation.
+
+Design notes:
+- Avoid pulsing neon or aggressive animation.
+- If animation is used, keep it subtle and limited, such as a gentle pulse on the primary button only for the first few cards after changing mode or after a long pause.
+- Do not rely on color alone if possible. Use size, opacity, border weight, glow, or fill differences.
+- The down/show button is currently too visually small when highlighted. Make the primary/suggested treatment large enough to be noticeable.
+- The center audio button already reads well; make the Show/down button comparably understandable when it is primary.
+
+Acceptance criteria:
+- Code compiles with the new enum value.
+- All switch statements / mappings handling ControlEmphasis are updated.
+- Only one control is primary in ordinary interactive states.
+- Useful secondary controls can still be suggested.
+- Next/Show is primary only in Browse and muted/discouraged in active recall/output modes.
+- Discouraged controls remain tappable.
+- The visual hierarchy makes the next intended action obvious.
