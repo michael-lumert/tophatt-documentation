@@ -1,1 +1,0 @@
-One more question. I've attached a screenshot of our current Path page. I don't think we've discussed how to decide when a deck is 'done' and the next up highlight can move down. Should we just allow the user to decide? Should we add a self-test mode? Or some other thing?
